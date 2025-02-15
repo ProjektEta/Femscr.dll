@@ -1,6 +1,7 @@
 mouse1click = mouse1click or nil
 mousemoveabs = mousemoveabs or nil
 
+
 local s = true
 local function loop() 
     local event = game.Players.LocalPlayer
@@ -27,8 +28,10 @@ local function loop()
         if ui:FindFirstChild("safezone") then
             if ui.safezone:FindFirstChild("button") then
 		if mouse1click and mousemoveabs then
-		    mousemoveabs(ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80)
-                    mouse1click()
+            pcall(function()
+                mousemoveabs(ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80)
+                mouse1click() 
+            end)
 		end
             end
         end
@@ -90,6 +93,15 @@ OrionLib:MakeNotification({
 	Image = "rbxassetid://4483345998",
 	Time = 5
 })
+
+if not mouse1click or not mousemoveabs then
+    OrionLib:MakeNotification({
+        Name = "FemScr",
+        Content = "Your Executor doesnt support mouse1click or mousemoveabs, Your script will be slower.",
+        Image = "rbxassetid://4483345998",
+        Time = 5
+    })
+end
 
 if setclipboard then
     setclipboard("https://discord.gg/x4RfPQZvs2")
