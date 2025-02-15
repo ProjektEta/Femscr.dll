@@ -1,19 +1,18 @@
 
 local GuiService = game:GetService("GuiService")
 local VIM = game:GetService("VirtualInputManager")
+local s = true
 
 local LockedCFrame = nil
 
-local s = true
 local function loop() 
     local event = game.Players.LocalPlayer
 
     local s,e = pcall(function()
+
         for _,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
             if v:IsA("Tool") then event = v end
         end
-    
-        event.events.cast:FireServer(100, 1)
 
         if game.Players.LocalPlayer.Character then
             if LockedCFrame == nil then
@@ -22,6 +21,8 @@ local function loop()
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = LockedCFrame
             end
         end
+    
+        event.events.cast:FireServer(100, 1)
     end)
     if e then
         warn("No fishing rod equipped!")
