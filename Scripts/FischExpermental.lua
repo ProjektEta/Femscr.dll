@@ -26,7 +26,9 @@ local function loop()
         if ui:FindFirstChild("safezone") then
             if ui.safezone:FindFirstChild("button") then
                 mousemoveabs(ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80)
-                mouse1click()
+                mouse1press()
+		task.wait(.1)
+		mouse1release()		
             end
         end
         task.wait()
