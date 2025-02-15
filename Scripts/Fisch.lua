@@ -2,6 +2,8 @@
 local GuiService = game:GetService("GuiService")
 local VIM = game:GetService("VirtualInputManager")
 
+local LockedCFrame = nil
+
 local s = true
 local function loop() 
     local event = game.Players.LocalPlayer
@@ -12,9 +14,18 @@ local function loop()
         end
     
         event.events.cast:FireServer(100, 1)
+
+        if game.Players.LocalPlayer.Character then
+            if LockedCFrame == nil then
+                LockedCFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            else
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = LockedCFrame
+            end
+        end
     end)
     if e then
         warn("No fishing rod equipped!")
+        LockedCFrame = nil
         return;
     end
 
@@ -76,6 +87,48 @@ end
 
 
 local function autofarmLoop()
+
+    game.ReplicatedStorage.playerstats:FindFirstChild(game.Players.LocalPlayer.Name).Inventory.ChildAdded:Connect(function(newItem)
+        if (shared.UseWebhook) then
+            local s,e = pcall(function()
+
+                local Mutation = newItem:FindFirstChild("Mutation") or "NULL"
+                if (typeof(Mutation) == "Instance") then Mutation = Mutation.Value end
+                request({
+                    Url = shared.Webhook,
+                    Method = "Post",
+                    Headers = {
+                        ['content-type'] = "application/json",
+                    },
+                    Body = game:GetService("HttpService"):JSONEncode({
+                        ['embeds'] = {{
+                            ['title'] = "__**FEMSCR AUTO FISHER**__",
+                            ['description'] = "You have caught a fish...",
+                            ['type'] = "rich",
+                            ['color'] = tonumber(0xffffff),
+                            ['fields'] = {
+                                {
+                                    ["name"] = "You caught a "..newItem.Value,
+                                    ["value"] = "Wighet: "..newItem:WaitForChild("Weight").Value.."KG \nMutation: "..Mutation
+
+                                },
+                                {
+                                    ["name"] = game.Players.LocalPlayer.Name.." Stats",
+                                    ["value"] = "C$: "..game.Players.LocalPlayer.leaderstats['C$'].Value.."\nLevel: "..game.Players.LocalPlayer.leaderstats['Level'].Value
+                                },
+                            },
+                            ['footer'] = {
+                                ['text'] = "Eta is best femboy ^^"
+                            }
+                        }}
+                    })
+                })
+            end)
+            if e then
+                warn(e)
+            end
+        end
+    end)
 
     while true do
         if s then
