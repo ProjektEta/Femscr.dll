@@ -1,4 +1,5 @@
-if not mouse1click or not mousemoveabs then game.Players.LocalPlayer:Kick("Unsupported") end
+mouse1click = mouse1click or nil
+mousemoveabs = mousemoveabs or nil
 
 local s = true
 local function loop() 
@@ -25,8 +26,10 @@ local function loop()
     repeat
         if ui:FindFirstChild("safezone") then
             if ui.safezone:FindFirstChild("button") then
-                mousemoveabs(ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80)
-                mouse1click()
+		if mouse1click and mousemoveabs then
+		    mousemoveabs(ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80)
+                    mouse1click()
+		end
             end
         end
         task.wait()
