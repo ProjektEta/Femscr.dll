@@ -1,6 +1,6 @@
-mouse1click = mouse1click or nil
-mousemoveabs = mousemoveabs or nil
 
+local GuiService = game:GetService("GuiService")
+local VIM = game:GetService("VirtualInputManager")
 
 local s = true
 local function loop() 
@@ -27,16 +27,17 @@ local function loop()
     repeat
         if ui:FindFirstChild("safezone") then
             if ui.safezone:FindFirstChild("button") then
-		if mouse1click and mousemoveabs then
-            pcall(function()
-                mousemoveabs(ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80)
-                mouse1click() 
-            end)
-		end
+                pcall(function()
+                    GuiService.SelectedObject = ui.safezone:FindFirstChild("button")
+                    if GuiService.SelectedObject == ui.safezone:FindFirstChild("button") then
+                        VIM:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                        VIM:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                    end
+                end)
             end
         end
         task.wait()
-    
+        GuiService.SelectedObject = nil
         ui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("shakeui")
         if not (ui) then ui = false end
     until not ui
@@ -93,16 +94,6 @@ OrionLib:MakeNotification({
 	Image = "rbxassetid://4483345998",
 	Time = 5
 })
-
-if not mouse1click or not mousemoveabs then
-    OrionLib:MakeNotification({
-        Name = "FemScr",
-        Content = "Your Executor doesnt support mouse1click or mousemoveabs, Your script will be slower.",
-        Image = "rbxassetid://4483345998",
-        Time = 5
-    })
-end
-
 if setclipboard then
     setclipboard("https://discord.gg/x4RfPQZvs2")
 end
