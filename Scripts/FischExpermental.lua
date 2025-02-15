@@ -25,22 +25,8 @@ local function loop()
     repeat
         if ui:FindFirstChild("safezone") then
             if ui.safezone:FindFirstChild("button") then
-
-                    VIS:SendMouseButtonEvent(
-                        ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, 
-                        ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80,
-                        1,
-                        true,
-                        nil
-                    )
-                    task.wait(.1)
-                    VIS:SendMouseButtonEvent(
-                        ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, 
-                        ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80,
-                        1,
-                        false,
-                        nil
-                    ) 
+                mousemoveabs(ui.safezone:FindFirstChild("button").AbsolutePosition.X + 60, ui.safezone:FindFirstChild("button").AbsolutePosition.Y + 80)
+                mouse1click()
             end
         end
         task.wait()
