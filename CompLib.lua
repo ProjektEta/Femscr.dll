@@ -1945,4 +1945,14 @@ function library:CreateWindow(csize, cpos)
 	return window
 end
 
+local function GetConfigs()
+	cfgs = {}
+	for i,v in pairs(listdir("femsense")) do
+		if v:sub(-10) == ".fem" then
+			table.insert(cfgs, string.split(v, ".")[1]:sub(8))
+		end
+	end
+	return cfgs
+end
+
 return library
